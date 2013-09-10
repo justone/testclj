@@ -1,6 +1,10 @@
-(ns testclj.core)
+(ns testclj.core
+  (:use [ring.adapter.jetty :only [run-jetty]]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn handler [request]
+  {:status 200
+     :headers {"Content-Type" "text/html"}
+        :body "Hello from Clojure!"})
+
+(defn -main [port]
+  (run-jetty handler {:port (Integer. port)}))
