@@ -1,7 +1,20 @@
 (ns testclj.core-test
-  (:require [clojure.test :refer :all]
-            [testclj.core :refer :all]))
+  (:use clojure.test
+        ring.mock.request
+        testclj.core
+        [clojure.contrib.string :only [substring?]]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest test-app
+  (testing "main route"
+    (let [response (app (request :get "/"))]
+      (is (= (:status response) 200))
+      (is (= (:body response) "Hello from Compojure"))))
+
+  (testing "param route"
+    (let [response (app (request :get "/name"))]
+      (is (= (:status response) 200))
+      (is (substring? "name" (:body response)))))
+
+  (testing "not-found route"
+    (let [response (app (request :get "/foo/invalid"))]
+      (is (= (:status response) 404)))))
