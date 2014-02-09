@@ -1,4 +1,5 @@
 (ns testclj.core
+  (:gen-class)
   (:use [ring.adapter.jetty :only [run-jetty]]
         [compojure.core])
   (:require [compojure.handler :as handler]
