@@ -1,14 +1,13 @@
 # testclj
 
-A Clojure library designed to ... well, that part is up to you.
+A test Clojure app that doesn't do much more than say hi.
 
 ## Usage
 
-FIXME
+Open dev.clj in Vim with the [right plugins](http://endot.org/2014/02/12/setting-up-vim-for-clojure/) and follow the instructions.
 
 ## License
 
-Copyright © 2013 FIXME
+Copyright © 2014 Nate Jones
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the MIT license.
