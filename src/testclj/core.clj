@@ -1,10 +1,12 @@
 (ns testclj.core
   (:gen-class)
   (:use [ring.adapter.jetty :only [run-jetty]]
+        [ring.util.serve]
         [compojure.core])
   (:require [compojure.handler :as handler]
             [compojure.route :as route]
-            [clojure.string :as string]))
+            [clojure.string :as string]
+            [testclj.reload :as reload]))
 
 (defn parse-int
   "Parse a string into an integer"
@@ -37,3 +39,10 @@
 
 (defn -main [port]
   (run-jetty app {:port (Integer. port)}))
+
+(defn dev-server
+  "Start a dev server with live-reload of namespaces"
+  []
+  (use 'ring.util.serve)
+  (reload/start-nstracker)
+  (serve app))

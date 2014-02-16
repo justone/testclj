@@ -9,7 +9,8 @@
                  [ring/ring-core "1.2.0"]
                  [ring/ring-jetty-adapter "1.2.0"]
                  [org.mortbay.jetty/jetty "6.1.26"]
-                 [compojure "1.1.5"]]
+                 [compojure "1.1.5"]
+                 [ns-tracker "0.2.2"]]
   :profiles {:dev {:dependencies [[ring-serve "0.1.2"]
                                   [ring-mock "0.1.5"]]}}
   :main testclj.core)
