@@ -25,7 +25,11 @@
 
 (defn sum-numbers-in-uri
   [uri]
-  (reduce + (map parse-int (filter-re #"\d+" (split-uri uri)))))
+  (->> uri
+      (split-uri)
+      (filter-re #"\d+")
+      (map parse-int)
+      (reduce +)))
 
 (defroutes app-routes
   (GET "/" [] "Hello from Compojure")
