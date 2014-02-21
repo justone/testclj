@@ -11,7 +11,7 @@
 (defn parse-int
   "Parse a string into an integer"
   [str]
-  (. Integer parseInt str))
+  (Integer/parseInt str))
 
 (defn filter-re
   "Filters a collection of strings on a regular expression"
