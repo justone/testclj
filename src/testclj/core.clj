@@ -44,6 +44,9 @@
 (defn -main [port]
   (run-jetty app {:port (Integer. port)}))
 
+; 1. run 'lein repl' in another tmux tab
+; 2. run 'cpp' on the next line to start the dev server
+; (testclj.core/dev-server)
 (defn dev-server
   "Start a dev server with live-reload of namespaces"
   []
