@@ -1,9 +1,10 @@
 (ns testclj.core
   (:gen-class)
-  (:use [ring.adapter.jetty :only [run-jetty]]
-        [ring.util.serve]
-        [compojure.core])
-  (:require [compojure.handler :as handler]
+  (:use
+    [compojure.core :only [defroutes GET]]
+    [compojure.handler :only [site]]
+    org.httpkit.server)
+  (:require
             [compojure.route :as route]
             [clojure.string :as string]
             [testclj.reload :as reload]))
@@ -39,17 +40,20 @@
   (route/not-found "Not Found"))
 
 (def app
-  (handler/site app-routes))
+  (site app-routes))
 
 (defn -main [port]
-  (run-jetty app {:port (Integer. port)}))
+  (run-server (site #'app-routes) {:port (Integer. port)}))
 
 ; 1. run 'lein repl' in another tmux tab
-; 2. run 'cpp' on the next line to start the dev server
-; (testclj.core/dev-server)
+; 2. run 'cp%' on the next line to start the dev server
+; 3. run 'cp%' on the next line to stop the dev server
+(comment
+  (def stop-dev (dev-server))
+  (stop-dev)
+  )
 (defn dev-server
   "Start a dev server with live-reload of namespaces"
   []
-  (use 'ring.util.serve)
   (reload/start-nstracker)
-  (serve app))
+  (-main 8080))
