@@ -24,18 +24,22 @@
   [uri]
   (string/split uri #"/"))
 
-(defn sum-numbers-in-uri
+(defn operate-on-numbers-in-uri
   [uri]
-  (->> uri
-      (split-uri)
-      (filter-re #"\d+")
-      (map parse-int)
-      (reduce +)))
+  (let [parts     (split-uri uri)
+        operation (resolve (symbol (first parts)))
+        operands  (rest parts)]
+    (->> operands
+         (filter-re #"\d+")
+         (map parse-int)
+         (reduce operation))))
 
 (defroutes app-routes
   (GET "/" [] "Hello from Compojure")
   (GET "/:who" [who] (str "Hello to '" who "' from Compojure"))
-  (GET "/a/*" {uri :uri} (str "sum is " (sum-numbers-in-uri uri)))
+  (GET "/+/*" {uri :uri} (str "result is " (operate-on-numbers-in-uri (apply str (rest uri)))))
+  (GET "/-/*" {uri :uri} (str "result is " (operate-on-numbers-in-uri (apply str (rest uri)))))
+  (GET "/mod/*" {uri :uri} (str "result is " (operate-on-numbers-in-uri (apply str (rest uri)))))
   (route/resources "/")
   (route/not-found "Not Found"))
 
