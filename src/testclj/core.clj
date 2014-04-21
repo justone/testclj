@@ -24,22 +24,32 @@
   [uri]
   (string/split uri #"/"))
 
+(def operations {"-" - "+" + "mod" mod "div" / "mul" *})
+
+(defn str-rest
+  "Returns the 'rest' of the string, a.k.a. remove the first character."
+  [string]
+  (apply str (rest string)))
+
 (defn operate-on-numbers-in-uri
   [uri]
-  (let [parts     (split-uri uri)
-        operation (resolve (symbol (first parts)))
+  (let [parts     (rest (split-uri (str-rest uri)))
+        operation (first parts)
         operands  (rest parts)]
-    (->> operands
-         (filter-re #"\d+")
-         (map parse-int)
-         (reduce operation))))
+    (if (contains? operations operation)
+      (->> operands
+           (filter-re #"\d+")
+           (map parse-int)
+           (reduce (get operations operation))
+           (str "result is "))
+      "Invalid operation"
+      )
+    ))
 
 (defroutes app-routes
   (GET "/" [] "Hello from Compojure")
   (GET "/:who" [who] (str "Hello to '" who "' from Compojure"))
-  (GET "/+/*" {uri :uri} (str "result is " (operate-on-numbers-in-uri (apply str (rest uri)))))
-  (GET "/-/*" {uri :uri} (str "result is " (operate-on-numbers-in-uri (apply str (rest uri)))))
-  (GET "/mod/*" {uri :uri} (str "result is " (operate-on-numbers-in-uri (apply str (rest uri)))))
+  (GET "/math/*" {uri :uri} (operate-on-numbers-in-uri uri))
   (route/resources "/")
   (route/not-found "Not Found"))
 
